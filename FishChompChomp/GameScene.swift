@@ -10,7 +10,7 @@ import SpriteKit
 
 class GameScene: SKScene {
     
-    let zombie = SKSpriteNode(imageNamed: "zombie1")
+    let zombie = SKSpriteNode(imageNamed: "cat1")
     var lastUpdateTime: TimeInterval = 0
     var dt: TimeInterval = 0
     let zombieMovePointsPerSec: CGFloat = 480.0
@@ -30,7 +30,7 @@ class GameScene: SKScene {
         
         var textures:[SKTexture] = []
         for i in 1...4{
-            textures.append(SKTexture(imageNamed: "zombie\(i)"))
+            textures.append(SKTexture(imageNamed: "cat\(i)"))
         }
         textures.append(textures[2])
         textures.append(textures[1])
@@ -56,6 +56,7 @@ class GameScene: SKScene {
         run(SKAction.repeatForever(
             SKAction.sequence([SKAction.run() { [weak self] in
                 self?.spawnEnemy()
+                self?.spawnFishes()
                 },
                                SKAction.wait(forDuration: 2.0)])))
         debugDrawPlayableArea()
@@ -79,7 +80,9 @@ class GameScene: SKScene {
         }
         
         boundsCheckZombie()
-        
+    }
+    override func didEvaluateActions() {
+        checkCollisions()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>,
@@ -113,7 +116,8 @@ class GameScene: SKScene {
     }
     
     func spawnEnemy() {
-        let enemy = SKSpriteNode(imageNamed: "enemy")
+        let enemy = SKSpriteNode(imageNamed: "red_fish1")
+        enemy.name = "enemy"
         enemy.position = CGPoint(
             x: size.width + enemy.size.width/2,
             y: CGFloat.random(
@@ -124,6 +128,29 @@ class GameScene: SKScene {
             SKAction.moveTo(x: -enemy.size.width/2, duration: 2.0)
         let actionRemove = SKAction.removeFromParent()
         enemy.run(SKAction.sequence([actionMove, actionRemove]))
+    }
+    
+    func spawnFishes(){
+        let fish = SKSpriteNode(imageNamed: "green_fish1")
+        fish.name = "green_fish"
+        fish.position = CGPoint(x: CGFloat.random(min: playableRect.minX, max: playableRect.maxX),
+                                y: CGFloat.random(min: playableRect.minY, max: playableRect.maxY))
+        fish.setScale(0)
+        addChild(fish)
+        let appear = SKAction.scale(to: 1.0, duration: 0.5)
+        fish.zRotation = -π / 16
+        let leftWiggle = SKAction.rotate(byAngle: π/8, duration: 0.5)
+        let rightWiggle = leftWiggle.reversed()
+        let fullWiggle = SKAction.sequence([leftWiggle,rightWiggle])
+        let scaleUp = SKAction.scale(by: 1.2, duration: 0.25)
+        let scaleDown = scaleUp.reversed()
+        let fullScale = SKAction.sequence([scaleUp,scaleDown,scaleUp,scaleDown])
+        let group = SKAction.group([fullScale,fullWiggle])
+        let groupWait = SKAction.repeat(group, count: 10)
+        let disappear = SKAction.scale(to: 0, duration: 0.5)
+        let removeFromParent = SKAction.removeFromParent()
+        let actions = [appear,groupWait,disappear,removeFromParent]
+        fish.run(SKAction.sequence(actions))
     }
     
     func debugDrawPlayableArea() {
@@ -182,6 +209,39 @@ class GameScene: SKScene {
         let shortest = shortestAngleBetween(angle1: sprite.zRotation, angle2: velocity.angle)
         let amountToRotate = min(rotateRadiansPerSec * CGFloat(dt), abs(shortest))
         sprite.zRotation += shortest.sign() * amountToRotate
+    }
+    
+    
+    func catHit(fish:SKSpriteNode){
+        fish.removeFromParent()
+    }
+    
+    func catHit(enemy:SKSpriteNode){
+        enemy.removeFromParent()
+    }
+    
+    func checkCollisions(){
+        var hitFish: [SKSpriteNode] = []
+        enumerateChildNodes(withName: "green_fish") { node, _ in
+            let fish = node as! SKSpriteNode
+            if fish.frame.insetBy(dx: 20, dy: 20).intersects(self.zombie.frame){
+                hitFish.append(fish)
+            }
+        }
+        for fish in hitFish{
+            catHit(fish: fish)
+        }
+        
+        var hitEnemies: [SKSpriteNode] = []
+        enumerateChildNodes(withName: "enemy") { node, _ in
+            let enemy = node as! SKSpriteNode
+            if node.frame.insetBy(dx: 20, dy: 20).intersects(self.zombie.frame){
+                hitEnemies.append(enemy)
+            }
+        }
+        for enemy in hitEnemies{
+            catHit(enemy: enemy)
+        }
     }
     
 }
