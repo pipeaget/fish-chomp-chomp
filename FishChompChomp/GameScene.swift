@@ -19,6 +19,8 @@ class GameScene: SKScene {
     var lastTouchLocation: CGPoint?
     let zombieRotateRadiansPerSec:CGFloat = 4.0 * π
     let zombieAnimation:SKAction
+    var invincible = false
+    
     
     override init(size: CGSize) {
         let maxAspectRatio:CGFloat = 16.0/9.0
@@ -218,6 +220,20 @@ class GameScene: SKScene {
     
     func catHit(enemy:SKSpriteNode){
         enemy.removeFromParent()
+        invincible = true
+        let blinkTimes :TimeInterval = 10
+        let duration :TimeInterval = 3
+        let blinkAction = SKAction.customAction(withDuration: duration) { (node, elapsedTime) in
+            let slice = duration / blinkTimes
+            let remainder = Double(elapsedTime).truncatingRemainder(dividingBy: slice)
+            node.isHidden = remainder > slice/2
+        }
+        let setHidden = SKAction.run { [weak self] in
+            self?.zombie.isHidden = false
+            self?.invincible = false
+        }
+        zombie.run(SKAction.sequence([blinkAction,setHidden]))
+        
     }
     
     func checkCollisions(){
@@ -230,6 +246,9 @@ class GameScene: SKScene {
         }
         for fish in hitFish{
             catHit(fish: fish)
+        }
+        if invincible{
+            return
         }
         
         var hitEnemies: [SKSpriteNode] = []
