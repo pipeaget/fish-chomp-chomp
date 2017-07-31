@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CCC8991A1F2F64E3003393A6 /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC899191F2F64E3003393A6 /* GameOverScene.swift */; };
+		CCC8991C1F2F9419003393A6 /* Chase.wav in Resources */ = {isa = PBXBuildFile; fileRef = CCC8991B1F2F9418003393A6 /* Chase.wav */; };
+		CCC8991F1F2F9573003393A6 /* MusicPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC8991E1F2F9573003393A6 /* MusicPlayer.swift */; };
+		CCC899231F2FC193003393A6 /* AGSpriteButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC899221F2FC193003393A6 /* AGSpriteButton.m */; };
+		CCC899261F2FD235003393A6 /* GLIMSTIC.TTF in Resources */ = {isa = PBXBuildFile; fileRef = CCC899251F2FD235003393A6 /* GLIMSTIC.TTF */; };
 		CCFC732F1F2D1655008C60BB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFC732E1F2D1655008C60BB /* AppDelegate.swift */; };
 		CCFC73341F2D1655008C60BB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CCFC73321F2D1655008C60BB /* Main.storyboard */; };
 		CCFC73361F2D1655008C60BB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CCFC73351F2D1655008C60BB /* Assets.xcassets */; };
@@ -40,6 +45,21 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		21559413C58C85771D6BC850 /* Pods_FishCatcherTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FishCatcherTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		22F8C84FC1A08F65634AA162 /* Pods-FishCatcherUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FishCatcherUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FishCatcherUITests/Pods-FishCatcherUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		438C6807574E9056065C920D /* Pods-FishCatcherUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FishCatcherUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-FishCatcherUITests/Pods-FishCatcherUITests.release.xcconfig"; sourceTree = "<group>"; };
+		4AC0E205F4C4009D868A1E36 /* Pods-FishCatcher.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FishCatcher.release.xcconfig"; path = "Pods/Target Support Files/Pods-FishCatcher/Pods-FishCatcher.release.xcconfig"; sourceTree = "<group>"; };
+		90971E7B972DE15F2F0A62CA /* Pods_FishCatcher.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FishCatcher.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A02D642FDEC0447354FA24DA /* Pods-FishCatcherTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FishCatcherTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FishCatcherTests/Pods-FishCatcherTests.debug.xcconfig"; sourceTree = "<group>"; };
+		C148CCF8D6138CDD4C3E9CAC /* Pods-FishCatcher.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FishCatcher.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FishCatcher/Pods-FishCatcher.debug.xcconfig"; sourceTree = "<group>"; };
+		C622E1B0317EBFD51FA20C2C /* Pods-FishCatcherTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FishCatcherTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-FishCatcherTests/Pods-FishCatcherTests.release.xcconfig"; sourceTree = "<group>"; };
+		CCC899191F2F64E3003393A6 /* GameOverScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameOverScene.swift; path = Scenes/GameOverScene.swift; sourceTree = "<group>"; };
+		CCC8991B1F2F9418003393A6 /* Chase.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = Chase.wav; path = Multimedia/Chase.wav; sourceTree = "<group>"; };
+		CCC8991E1F2F9573003393A6 /* MusicPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MusicPlayer.swift; path = Classes/MusicPlayer.swift; sourceTree = "<group>"; };
+		CCC899201F2FC192003393A6 /* FishCatcher-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FishCatcher-Bridging-Header.h"; sourceTree = "<group>"; };
+		CCC899211F2FC193003393A6 /* AGSpriteButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AGSpriteButton.h; path = Classes/AGSpriteButton/AGSpriteButton.h; sourceTree = "<group>"; };
+		CCC899221F2FC193003393A6 /* AGSpriteButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AGSpriteButton.m; path = Classes/AGSpriteButton/AGSpriteButton.m; sourceTree = "<group>"; };
+		CCC899251F2FD235003393A6 /* GLIMSTIC.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = GLIMSTIC.TTF; sourceTree = "<group>"; };
 		CCFC732B1F2D1655008C60BB /* FishCatcher.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FishCatcher.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCFC732E1F2D1655008C60BB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CCFC73331F2D1655008C60BB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -59,6 +79,7 @@
 		CCFC736A1F2D2853008C60BB /* GreenFish.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GreenFish.swift; path = Characters/GreenFish.swift; sourceTree = "<group>"; };
 		CCFC736C1F2D373D008C60BB /* BlueFish.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BlueFish.swift; path = Characters/BlueFish.swift; sourceTree = "<group>"; };
 		CCFC736E1F2D548D008C60BB /* Logic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Logic.swift; path = Classes/Logic.swift; sourceTree = "<group>"; };
+		D72158520094A2A90ECA17F7 /* Pods_FishCatcherUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FishCatcherUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +107,47 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		452A3A50CDAAE06AB7EBD7E8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				90971E7B972DE15F2F0A62CA /* Pods_FishCatcher.framework */,
+				21559413C58C85771D6BC850 /* Pods_FishCatcherTests.framework */,
+				D72158520094A2A90ECA17F7 /* Pods_FishCatcherUITests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		83F26CF85D7768E58FC60B88 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C148CCF8D6138CDD4C3E9CAC /* Pods-FishCatcher.debug.xcconfig */,
+				4AC0E205F4C4009D868A1E36 /* Pods-FishCatcher.release.xcconfig */,
+				A02D642FDEC0447354FA24DA /* Pods-FishCatcherTests.debug.xcconfig */,
+				C622E1B0317EBFD51FA20C2C /* Pods-FishCatcherTests.release.xcconfig */,
+				22F8C84FC1A08F65634AA162 /* Pods-FishCatcherUITests.debug.xcconfig */,
+				438C6807574E9056065C920D /* Pods-FishCatcherUITests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		CCC8991D1F2F9420003393A6 /* Multimedia */ = {
+			isa = PBXGroup;
+			children = (
+				CCC8991B1F2F9418003393A6 /* Chase.wav */,
+				CCC899251F2FD235003393A6 /* GLIMSTIC.TTF */,
+			);
+			name = Multimedia;
+			sourceTree = "<group>";
+		};
+		CCC899241F2FC199003393A6 /* AGSpriteButton */ = {
+			isa = PBXGroup;
+			children = (
+				CCC899211F2FC193003393A6 /* AGSpriteButton.h */,
+				CCC899221F2FC193003393A6 /* AGSpriteButton.m */,
+			);
+			name = AGSpriteButton;
+			sourceTree = "<group>";
+		};
 		CCFC73221F2D1655008C60BB = {
 			isa = PBXGroup;
 			children = (
@@ -93,6 +155,8 @@
 				CCFC73421F2D1656008C60BB /* FishCatcherTests */,
 				CCFC734D1F2D1656008C60BB /* FishCatcherUITests */,
 				CCFC732C1F2D1655008C60BB /* Products */,
+				83F26CF85D7768E58FC60B88 /* Pods */,
+				452A3A50CDAAE06AB7EBD7E8 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -112,13 +176,14 @@
 				CCFC733A1F2D1655008C60BB /* Info.plist */,
 				CCFC732E1F2D1655008C60BB /* AppDelegate.swift */,
 				CCFC73351F2D1655008C60BB /* Assets.xcassets */,
-				CCFC73371F2D1655008C60BB /* LaunchScreen.storyboard */,
 				CCFC73321F2D1655008C60BB /* Main.storyboard */,
+				CCFC73371F2D1655008C60BB /* LaunchScreen.storyboard */,
 				CCFC73621F2D18DE008C60BB /* Characters */,
 				CCFC73671F2D1980008C60BB /* Extensions */,
+				CCFC73701F2D5492008C60BB /* Classes */,
+				CCC8991D1F2F9420003393A6 /* Multimedia */,
 				CCFC73631F2D18E6008C60BB /* Scenes */,
 				CCFC73641F2D18EC008C60BB /* ViewControllers */,
-				CCFC73701F2D5492008C60BB /* Logic */,
 			);
 			path = FishCatcher;
 			sourceTree = "<group>";
@@ -155,6 +220,7 @@
 			isa = PBXGroup;
 			children = (
 				CCFC735E1F2D185C008C60BB /* GameScene.swift */,
+				CCC899191F2F64E3003393A6 /* GameOverScene.swift */,
 			);
 			name = Scenes;
 			sourceTree = "<group>";
@@ -175,12 +241,15 @@
 			name = Extensions;
 			sourceTree = "<group>";
 		};
-		CCFC73701F2D5492008C60BB /* Logic */ = {
+		CCFC73701F2D5492008C60BB /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				CCC899241F2FC199003393A6 /* AGSpriteButton */,
 				CCFC736E1F2D548D008C60BB /* Logic.swift */,
+				CCC8991E1F2F9573003393A6 /* MusicPlayer.swift */,
+				CCC899201F2FC192003393A6 /* FishCatcher-Bridging-Header.h */,
 			);
-			name = Logic;
+			name = Classes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -252,6 +321,7 @@
 					CCFC732A1F2D1655008C60BB = {
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = Z9289CTFX8;
+						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
 					};
 					CCFC733E1F2D1656008C60BB = {
@@ -294,6 +364,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				CCFC73391F2D1655008C60BB /* LaunchScreen.storyboard in Resources */,
+				CCC8991C1F2F9419003393A6 /* Chase.wav in Resources */,
+				CCC899261F2FD235003393A6 /* GLIMSTIC.TTF in Resources */,
 				CCFC73361F2D1655008C60BB /* Assets.xcassets in Resources */,
 				CCFC73341F2D1655008C60BB /* Main.storyboard in Resources */,
 			);
@@ -320,6 +392,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CCC8991F1F2F9573003393A6 /* MusicPlayer.swift in Sources */,
+				CCC8991A1F2F64E3003393A6 /* GameOverScene.swift in Sources */,
 				CCFC735F1F2D185C008C60BB /* GameScene.swift in Sources */,
 				CCFC736F1F2D548D008C60BB /* Logic.swift in Sources */,
 				CCFC735D1F2D1822008C60BB /* GameVC.swift in Sources */,
@@ -328,6 +402,7 @@
 				CCFC73691F2D2089008C60BB /* RedFish.swift in Sources */,
 				CCFC73611F2D18C0008C60BB /* CatCharacter.swift in Sources */,
 				CCFC736B1F2D2853008C60BB /* GreenFish.swift in Sources */,
+				CCC899231F2FC193003393A6 /* AGSpriteButton.m in Sources */,
 				CCFC732F1F2D1655008C60BB /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -477,13 +552,17 @@
 		};
 		CCFC73541F2D1656008C60BB /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C148CCF8D6138CDD4C3E9CAC /* Pods-FishCatcher.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = Z9289CTFX8;
 				INFOPLIST_FILE = FishCatcher/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.vincoorbis.FishCatcher;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "FishCatcher/FishCatcher-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -491,13 +570,16 @@
 		};
 		CCFC73551F2D1656008C60BB /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4AC0E205F4C4009D868A1E36 /* Pods-FishCatcher.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = Z9289CTFX8;
 				INFOPLIST_FILE = FishCatcher/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.vincoorbis.FishCatcher;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "FishCatcher/FishCatcher-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -505,6 +587,7 @@
 		};
 		CCFC73571F2D1656008C60BB /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A02D642FDEC0447354FA24DA /* Pods-FishCatcherTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -520,6 +603,7 @@
 		};
 		CCFC73581F2D1656008C60BB /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C622E1B0317EBFD51FA20C2C /* Pods-FishCatcherTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -535,6 +619,7 @@
 		};
 		CCFC735A1F2D1656008C60BB /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 22F8C84FC1A08F65634AA162 /* Pods-FishCatcherUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEVELOPMENT_TEAM = Z9289CTFX8;
@@ -549,6 +634,7 @@
 		};
 		CCFC735B1F2D1656008C60BB /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 438C6807574E9056065C920D /* Pods-FishCatcherUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEVELOPMENT_TEAM = Z9289CTFX8;
@@ -580,6 +666,7 @@
 				CCFC73551F2D1656008C60BB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		CCFC73561F2D1656008C60BB /* Build configuration list for PBXNativeTarget "FishCatcherTests" */ = {
 			isa = XCConfigurationList;
@@ -588,6 +675,7 @@
 				CCFC73581F2D1656008C60BB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		CCFC73591F2D1656008C60BB /* Build configuration list for PBXNativeTarget "FishCatcherUITests" */ = {
 			isa = XCConfigurationList;
@@ -596,6 +684,7 @@
 				CCFC735B1F2D1656008C60BB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -55,4 +55,21 @@ class CatCharacter: SKSpriteNode {
         let amountToRotate = min(catRotateRadiansPerSec * CGFloat(dt), abs(shortest))
         self.zRotation += shortest.sign() * amountToRotate
     }
+    
+    func catHit(enemy:RedFish){
+        invincible = true
+        let blinkTimes:TimeInterval = 10
+        let duration:TimeInterval = 3
+        let blinkAction = SKAction.customAction(withDuration: duration) { node, elapsedTime in
+            let slice = duration / blinkTimes
+            let remainder = Double(elapsedTime).truncatingRemainder(
+                dividingBy: slice)
+            node.isHidden = remainder > slice / 2
+        }
+        let setHidden = SKAction.run() { [weak self] in
+            self?.isHidden = false
+            self?.invincible = false
+        }
+        self.run(SKAction.sequence([blinkAction, setHidden]))
+    }
 }

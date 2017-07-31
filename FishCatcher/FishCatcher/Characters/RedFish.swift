@@ -16,7 +16,7 @@ class RedFish: SKSpriteNode {
     
     internal var fishAnimation:SKAction {
         var textures:[SKTexture] = []
-        for i in 1...4{
+        for i in 1...6{
             textures.append(SKTexture(imageNamed: "red_fish\(i)"))
         }
         textures.append(textures[4])
@@ -43,5 +43,25 @@ class RedFish: SKSpriteNode {
         self.removeAction(forKey: "swim")
     }
     
+    func changePositionAndShow(in playableRect:CGRect){
+        self.position = CGPoint(x: CGFloat.random(min: playableRect.minX, max: playableRect.maxX),
+                                y: CGFloat.random(min: playableRect.minY, max: playableRect.maxY))
+        self.isHidden = false
+        self.startFishAnimation()
+        self.setScale(0)
+        self.zRotation = 0
+        let appear = SKAction.scale(to: 1.0, duration: 0.5)
+        let leftWiggle = SKAction.rotate(byAngle: π/8, duration: 0.5)
+        let rightWiggle = leftWiggle.reversed()
+        let fullWiggle = SKAction.sequence([leftWiggle,rightWiggle])
+        let scaleUp = SKAction.scale(by: 1.0, duration: 0.25)
+        let scaleDown = scaleUp.reversed()
+        let fullScale = SKAction.sequence([scaleUp,scaleDown,scaleUp,scaleDown])
+        let group = SKAction.group([fullScale,fullWiggle])
+        let groupWait = SKAction.repeatForever(group)
+        let actions = [appear,groupWait]
+        self.run(SKAction.sequence(actions))
+        
+    }
     
 }
