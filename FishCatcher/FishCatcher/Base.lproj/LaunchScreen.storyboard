@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="m1W-Ev-JUa">
-    <device id="retina4_7" orientation="portrait">
+    <device id="retina4_7" orientation="landscape">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -18,14 +18,30 @@
                         <viewControllerLayoutGuide type="bottom" id="Qsh-hn-mWk"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="vCA-Fv-XF3">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splash" translatesAutoresizingMaskIntoConstraints="NO" id="wh6-bp-vkp">
+                                <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
+                            </imageView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="wh6-bp-vkp" firstAttribute="leading" secondItem="vCA-Fv-XF3" secondAttribute="leading" id="KPL-fO-B3s"/>
+                            <constraint firstItem="wh6-bp-vkp" firstAttribute="top" secondItem="vCA-Fv-XF3" secondAttribute="top" id="MXA-of-pYA"/>
+                            <constraint firstAttribute="trailing" secondItem="wh6-bp-vkp" secondAttribute="trailing" id="NHI-m3-SLP"/>
+                            <constraint firstItem="wh6-bp-vkp" firstAttribute="bottom" secondItem="Qsh-hn-mWk" secondAttribute="top" id="ZWX-Mi-Cpp"/>
+                        </constraints>
                     </view>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <nil key="simulatedTopBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DGd-6Z-3EL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="23" y="-321"/>
+            <point key="canvasLocation" x="22.938530734632685" y="-322.39999999999998"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="splash" width="1024" height="768"/>
+    </resources>
 </document>

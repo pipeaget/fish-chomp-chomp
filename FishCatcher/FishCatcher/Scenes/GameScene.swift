@@ -21,10 +21,13 @@ class GameScene: SKScene {
     var blueFish:BlueFish!
     lazy var btnMute:AGSpriteButton = {
         let btn = AGSpriteButton(imageNamed: "mute")
+        btn.zPosition = 300
         return btn
     }()
     var musicPlayer:AudioPLayer!
     var livesLabel:SKLabelNode!
+    var toNextLifeLabel:SKLabelNode!
+    var scoreLabel:SKLabelNode!
     let cameraNode = SKCameraNode()
     
     override init(size: CGSize) {
@@ -53,9 +56,14 @@ class GameScene: SKScene {
     
     override func didMove(to view: SKView) {
         backgroundColor = UIColor.white
+        let background = SKSpriteNode(imageNamed: "scenario_bg")
+        background.position = CGPoint(x: size.width/2, y: size.height/2)
+        background.zPosition = -1
+        addChild(background)
         musicPlayer.playBackgroundMusic()
         cat.position = CGPoint(x: 400, y: 400)
         cat.xScale = cat.xScale * -1
+        
         addChild(cat)
         cat.startCatAnimation()
         spawnFishes()
@@ -69,7 +77,8 @@ class GameScene: SKScene {
         camera = cameraNode
         cameraNode.position = CGPoint(x: size.width/2, y: size.height/2)
         addLivesLabel()
-        
+        addScore()
+        addNextLife()
     }
 
     override func update(_ currentTime: TimeInterval) {
@@ -89,6 +98,15 @@ class GameScene: SKScene {
         }
         boundsCheckCat()
         livesLabel.text = "Vidas:\(logic.lifes)"
+        greenFish.move(on: self)
+        blueFish.move(on: self)
+        enumerateChildNodes(withName: "enemy") { node, _ in
+            let redFish = node as! RedFish
+            redFish.move(on: self)
+        }
+        
+        scoreLabel.text = "\(logic.score) Pts"
+        toNextLifeLabel.text = "Sig vida: \(logic.catchesToNextLife)"
     }
     
     override func touchesBegan(_ touches: Set<UITouch>,
@@ -111,6 +129,7 @@ class GameScene: SKScene {
     
     override func didEvaluateActions() {
         checkCollisions()
+        
     }
     
     /// Method that shows says if the cat is on the rect bounds
@@ -170,9 +189,9 @@ class GameScene: SKScene {
     
     private func addLivesLabel(){
         livesLabel = SKLabelNode(fontNamed: "Glimstick")
-        livesLabel.text = "Vidas: \(logic.lifes)"
-        livesLabel.fontColor = UIColor.black
-        livesLabel.fontSize = 100
+        livesLabel.text = "Vidas:\(logic.lifes)"
+        livesLabel.fontColor = UIColor.white
+        livesLabel.fontSize = 80
         livesLabel.zPosition = 150
         livesLabel.horizontalAlignmentMode = .left
         livesLabel.verticalAlignmentMode = .bottom
@@ -180,6 +199,34 @@ class GameScene: SKScene {
                                       y: -playableRect.size.height/2 + CGFloat(20))
         
         cameraNode.addChild(livesLabel)
+    }
+    
+    private func addScore(){
+        scoreLabel = SKLabelNode(fontNamed: "Glimstick")
+        scoreLabel.text = "\(logic.score) Pts"
+        scoreLabel.fontColor = UIColor.white
+        scoreLabel.fontSize = 80
+        scoreLabel.zPosition = 150
+        scoreLabel.horizontalAlignmentMode = .right
+        scoreLabel.verticalAlignmentMode = .bottom
+        scoreLabel.position = CGPoint(x: playableRect.size.width/2 - CGFloat(80),
+                                      y: -playableRect.size.height/2 + CGFloat(20))
+        
+        cameraNode.addChild(scoreLabel)
+    }
+    
+    private func addNextLife(){
+        toNextLifeLabel = SKLabelNode(fontNamed: "Glimstick")
+        toNextLifeLabel.text = "Sig vida: \(logic.catchesToNextLife)"
+        toNextLifeLabel.fontColor = UIColor.white
+        toNextLifeLabel.fontSize = 80
+        toNextLifeLabel.zPosition = 150
+        toNextLifeLabel.horizontalAlignmentMode = .left
+        toNextLifeLabel.verticalAlignmentMode = .top
+        toNextLifeLabel.position = CGPoint(x: -playableRect.size.width/2 + 20,
+                                           y: playableRect.size.height/2 - 20)
+        
+        cameraNode.addChild(toNextLifeLabel)
     }
     
     /// Method that creates an enemy

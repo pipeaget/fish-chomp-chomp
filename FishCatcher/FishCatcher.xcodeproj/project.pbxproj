@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CC6006521F32188500CA5BF4 /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6006511F32188500CA5BF4 /* UIImageExtension.swift */; };
 		CCC8991A1F2F64E3003393A6 /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC899191F2F64E3003393A6 /* GameOverScene.swift */; };
 		CCC8991C1F2F9419003393A6 /* Chase.wav in Resources */ = {isa = PBXBuildFile; fileRef = CCC8991B1F2F9418003393A6 /* Chase.wav */; };
 		CCC8991F1F2F9573003393A6 /* MusicPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC8991E1F2F9573003393A6 /* MusicPlayer.swift */; };
@@ -53,6 +54,7 @@
 		A02D642FDEC0447354FA24DA /* Pods-FishCatcherTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FishCatcherTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FishCatcherTests/Pods-FishCatcherTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C148CCF8D6138CDD4C3E9CAC /* Pods-FishCatcher.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FishCatcher.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FishCatcher/Pods-FishCatcher.debug.xcconfig"; sourceTree = "<group>"; };
 		C622E1B0317EBFD51FA20C2C /* Pods-FishCatcherTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FishCatcherTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-FishCatcherTests/Pods-FishCatcherTests.release.xcconfig"; sourceTree = "<group>"; };
+		CC6006511F32188500CA5BF4 /* UIImageExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIImageExtension.swift; path = Extensions/UIImageExtension.swift; sourceTree = "<group>"; };
 		CCC899191F2F64E3003393A6 /* GameOverScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameOverScene.swift; path = Scenes/GameOverScene.swift; sourceTree = "<group>"; };
 		CCC8991B1F2F9418003393A6 /* Chase.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = Chase.wav; path = Multimedia/Chase.wav; sourceTree = "<group>"; };
 		CCC8991E1F2F9573003393A6 /* MusicPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MusicPlayer.swift; path = Classes/MusicPlayer.swift; sourceTree = "<group>"; };
@@ -237,6 +239,7 @@
 			isa = PBXGroup;
 			children = (
 				CCFC73651F2D1952008C60BB /* CGPointExtensions.swift */,
+				CC6006511F32188500CA5BF4 /* UIImageExtension.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -401,6 +404,7 @@
 				CCFC736D1F2D373D008C60BB /* BlueFish.swift in Sources */,
 				CCFC73691F2D2089008C60BB /* RedFish.swift in Sources */,
 				CCFC73611F2D18C0008C60BB /* CatCharacter.swift in Sources */,
+				CC6006521F32188500CA5BF4 /* UIImageExtension.swift in Sources */,
 				CCFC736B1F2D2853008C60BB /* GreenFish.swift in Sources */,
 				CCC899231F2FC193003393A6 /* AGSpriteButton.m in Sources */,
 				CCFC732F1F2D1655008C60BB /* AppDelegate.swift in Sources */,

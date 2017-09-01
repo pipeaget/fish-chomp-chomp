@@ -13,7 +13,9 @@ import SpriteKit
 class GameOverScene: SKScene{
     let lose:Bool
     lazy var btnReplay:AGSpriteButton = {
-        let btn = AGSpriteButton(imageNamed: "replay")
+        let replay = #imageLiteral(resourceName: "replay").imageWithColor(color: UIColor.white)
+        let texture = SKTexture(image: replay)
+        let btn = AGSpriteButton(texture: texture, andSize: CGSize(width: 300, height: 300))
         return btn
     }()
     
@@ -29,10 +31,12 @@ class GameOverScene: SKScene{
     
     override func didMove(to view: SKView) {
         backgroundColor = UIColor.groupTableViewBackground
-//        let background = SKSpriteNode(imageNamed: "you_lose")
-//        background.position = CGPoint(x: size.width/2, y: size.height/2)
-//        addChild(background)
-        btnReplay.position =  CGPoint(x: size.width/2, y: size.height/2  + 60)
+        let background = SKSpriteNode(imageNamed: "gameover_bg")
+        background.position = CGPoint(x: size.width/2, y: size.height/2)
+        background.zPosition = -1
+        addChild(background)
+        btnReplay.setScale(0.4)
+        btnReplay.position =  CGPoint(x: size.width/2, y: size.height/2  - 400)
         btnReplay.addTarget(self, selector: #selector(replayBtnPressed), with: nil, for: .touchUpInside)
         addChild(btnReplay)
     }

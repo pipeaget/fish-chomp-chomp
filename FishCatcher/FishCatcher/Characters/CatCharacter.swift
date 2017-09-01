@@ -15,6 +15,8 @@ class CatCharacter: SKSpriteNode {
     var velocity = CGPoint.zero
     
     
+    
+    
     internal var catAnimation:SKAction {
         var textures:[SKTexture] = []
         for i in 1...6{
