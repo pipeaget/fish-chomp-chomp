@@ -18,7 +18,6 @@ class GameScene: SKScene {
     var velocity: CGPoint = .zero
     weak var logic: Logic?
     var lastTouchLocation: CGPoint?
-    let audioPlayer = AudioPlayer()
     lazy var playableRect: CGRect = self.createPlayableRect()
     var gameChagedDelegate: GameChanged?
     var shouldPlay: ShouldPlayAction?
@@ -26,10 +25,8 @@ class GameScene: SKScene {
     let cat: CatCharacter = CatCharacter(imageNamed: "cat1")
     
     
-    
     //MARK: - Scene lifecycle
     override func didMove(to view: SKView) {
-        audioPlayer.playBackgroundMusic()
         let background = SKSpriteNode(imageNamed: "scenario_bg")
         background.position = CGPoint(x: size.width/2, y: size.height/2)
         background.zPosition = -100
@@ -67,18 +64,6 @@ class GameScene: SKScene {
         }
         boundsCheckCat()
         
-        enumerateChildNodes(withName: "goodFish") { node, _ in
-            if let fish = node as? Fish {
-                fish.move(on: self)
-            }
-        }
-        
-        enumerateChildNodes(withName: "enemy") { node, _ in
-            let redFish = node as! RedFish
-            redFish.changePositionAndShow(in: self.playableRect,
-                                          at: self.cat.position,
-                                          velocity: self.velocity, dt: Double(self.dt))
-        }
     }
     
     //MARK: - All touch handlers
@@ -170,23 +155,16 @@ class GameScene: SKScene {
         enemy.physicsBody?.usesPreciseCollisionDetection = false
         let appear = SKAction.scale(to: 1.0, duration: 0.5)
         enemy.run(appear)
+        enemy.move(on: self)
     }
     
     fileprivate func catHitEnemy(_ fish:RedFish){
         if cat.invincible{
             return
         }
-        cat.catHit(enemy: fish)
         logic?.touchRedFish({ (gameover) in
             if gameover {
-                self.audioPlayer.stopBackgroundMusic()
-                self.gameChagedDelegate?.resetToInit()
-                let gameOverScene = GameOverScene(size: self.size, lose: true)
-                gameOverScene.scaleMode = self.scaleMode
-                gameOverScene.logic = self.logic
-                gameOverScene.gameDelegate = self.gameChagedDelegate
-                let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
-                self.view?.presentScene(gameOverScene, transition: reveal)
+                self.gameChagedDelegate?.gameover()
                 return
             }
             self.gameChagedDelegate?.loseLife()
@@ -210,22 +188,24 @@ class GameScene: SKScene {
         greenFish.physicsBody?.usesPreciseCollisionDetection = false
         let appear = SKAction.scale(to: 1.0, duration: 0.5)
         greenFish.run(appear)
+        greenFish.move(on: self)
     }
     fileprivate func addBlueFish(){
-        let greenFish = BlueFish(imageNamed: "blue_fish1")
-        greenFish.name = "goodFish"
-        let size =  CGSize(width: greenFish.frame.size.width*0.8, height: greenFish.frame.size.height*0.8)
-        greenFish.physicsBody = SKPhysicsBody(rectangleOf: size)
-        greenFish.setScale(0)
-        greenFish.fishAnimation = greenFish.createFishAnimationWithSprite("blue_fish")
-        greenFish.position = CGPoint(x: CGFloat.random(min: playableRect.minX, max: playableRect.maxX-100),
+        let blueFish = BlueFish(imageNamed: "blue_fish1")
+        blueFish.name = "goodFish"
+        let size =  CGSize(width: blueFish.frame.size.width*0.8, height: blueFish.frame.size.height*0.8)
+        blueFish.physicsBody = SKPhysicsBody(rectangleOf: size)
+        blueFish.setScale(0)
+        blueFish.fishAnimation = blueFish.createFishAnimationWithSprite("blue_fish")
+        blueFish.position = CGPoint(x: CGFloat.random(min: playableRect.minX, max: playableRect.maxX-100),
                                      y: CGFloat.random(min: playableRect.minY, max: playableRect.maxY-100))
-        addChild(greenFish)
-        greenFish.startFishAnimation()
-        greenFish.physicsBody?.categoryBitMask = PhysicsCategory.goodFish
-        greenFish.physicsBody?.usesPreciseCollisionDetection = false
+        addChild(blueFish)
+        blueFish.startFishAnimation()
+        blueFish.physicsBody?.categoryBitMask = PhysicsCategory.goodFish
+        blueFish.physicsBody?.usesPreciseCollisionDetection = false
         let appear = SKAction.scale(to: 1.0, duration: 0.5)
-        greenFish.run(appear)
+        blueFish.run(appear)
+        blueFish.move(on: self)
     }
     
     fileprivate func catHitGoodFish(_ fish: Fish) {
@@ -258,6 +238,7 @@ class GameScene: SKScene {
     
 }
 
+// MARK: - SKPhysicsContactDelegate
 extension GameScene: SKPhysicsContactDelegate {
     func didBegin(_ contact: SKPhysicsContact) {
         let collision = (contact.bodyA.categoryBitMask, contact.bodyB.categoryBitMask)

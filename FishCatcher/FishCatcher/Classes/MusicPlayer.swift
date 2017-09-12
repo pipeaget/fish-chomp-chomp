@@ -9,51 +9,39 @@
 import AVFoundation
 
 class AudioPlayer:NSObject {
-    var backgroundPlayer:AVAudioPlayer!
-    internal var isPlaying = true
+    lazy var backgroundPlayer:AVAudioPlayer?  = {
+        guard  let url = Bundle.main.url(forResource: "Chase", withExtension: "wav") else{
+            return nil
+        }
+        do{
+            let  backgroundPlayer = try AVAudioPlayer(contentsOf: url)
+            backgroundPlayer.numberOfLoops = -1
+            backgroundPlayer.prepareToPlay()
+            return backgroundPlayer
+        } catch {
+            return nil
+        }
+    }()
+    internal var isPlaying = false
     
     /// Method that plays the music
     func playBackgroundMusic(){
-        guard  let url = Bundle.main.url(forResource: "Chase", withExtension: "wav") else{
+        guard let backgroundPlayer = backgroundPlayer, !isPlaying else{
             return
         }
-        do{
-            try backgroundPlayer = AVAudioPlayer(contentsOf: url)
-            backgroundPlayer.numberOfLoops = -1
-            backgroundPlayer.prepareToPlay()
-            backgroundPlayer.play()
-        }catch let e {
-            print(e.localizedDescription)
-        }
+        backgroundPlayer.play()
+        isPlaying = true
     }
     
     
     /// Method that stops the music
     func stopBackgroundMusic(){
-        isPlaying = false
-        guard let backgroundPlayer = backgroundPlayer, backgroundPlayer.isPlaying else{
+        
+        guard let backgroundPlayer = backgroundPlayer, isPlaying else{
             return
         }
         backgroundPlayer.stop()
+        isPlaying = false
     }
     
-    
-    
-    /// Method that pauses the music
-    func pauseBackgroundMusic(){
-        guard let backgroundPlayer = backgroundPlayer, backgroundPlayer.isPlaying else{
-            return
-        }
-        backgroundPlayer.pause()
-    }
-    
-    func tooglePlay() {
-        if isPlaying{
-            stopBackgroundMusic()
-            isPlaying = false
-        }else{
-            playBackgroundMusic()
-            isPlaying = true
-        }
-    }
 }

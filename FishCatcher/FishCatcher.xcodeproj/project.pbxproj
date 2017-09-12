@@ -11,6 +11,8 @@
 		CC255EF31F67961B003EFBE3 /* VOCoreText.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC255EF21F67961B003EFBE3 /* VOCoreText.swift */; };
 		CC255EF51F679702003EFBE3 /* GameChanged.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC255EF41F679702003EFBE3 /* GameChanged.swift */; };
 		CC255EF81F679A5D003EFBE3 /* UIFontExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC255EF71F679A5D003EFBE3 /* UIFontExtension.swift */; };
+		CC598D141F68960E000726ED /* GameOverVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC598D131F68960E000726ED /* GameOverVC.swift */; };
+		CC598D161F689649000726ED /* GameOverDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC598D151F689649000726ED /* GameOverDelegate.swift */; };
 		CC6006521F32188500CA5BF4 /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6006511F32188500CA5BF4 /* UIImageExtension.swift */; };
 		CCC8991A1F2F64E3003393A6 /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC899191F2F64E3003393A6 /* GameOverScene.swift */; };
 		CCC8991C1F2F9419003393A6 /* Chase.wav in Resources */ = {isa = PBXBuildFile; fileRef = CCC8991B1F2F9418003393A6 /* Chase.wav */; };
@@ -56,6 +58,8 @@
 		CC255EF21F67961B003EFBE3 /* VOCoreText.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VOCoreText.swift; path = Classes/VOCoreText.swift; sourceTree = "<group>"; };
 		CC255EF41F679702003EFBE3 /* GameChanged.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameChanged.swift; path = Protocols/GameChanged.swift; sourceTree = "<group>"; };
 		CC255EF71F679A5D003EFBE3 /* UIFontExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIFontExtension.swift; path = Extensions/UIFontExtension.swift; sourceTree = "<group>"; };
+		CC598D131F68960E000726ED /* GameOverVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameOverVC.swift; path = ViewControllers/GameOverVC.swift; sourceTree = "<group>"; };
+		CC598D151F689649000726ED /* GameOverDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameOverDelegate.swift; path = Protocols/GameOverDelegate.swift; sourceTree = "<group>"; };
 		CC6006511F32188500CA5BF4 /* UIImageExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIImageExtension.swift; path = Extensions/UIImageExtension.swift; sourceTree = "<group>"; };
 		CCC899191F2F64E3003393A6 /* GameOverScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameOverScene.swift; path = Scenes/GameOverScene.swift; sourceTree = "<group>"; };
 		CCC8991B1F2F9418003393A6 /* Chase.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = Chase.wav; path = Multimedia/Chase.wav; sourceTree = "<group>"; };
@@ -116,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				CC255EF41F679702003EFBE3 /* GameChanged.swift */,
+				CC598D151F689649000726ED /* GameOverDelegate.swift */,
 			);
 			name = Protocols;
 			sourceTree = "<group>";
@@ -219,6 +224,7 @@
 			isa = PBXGroup;
 			children = (
 				CCFC735C1F2D1822008C60BB /* GameVC.swift */,
+				CC598D131F68960E000726ED /* GameOverVC.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -397,6 +403,8 @@
 				CCFC736F1F2D548D008C60BB /* Logic.swift in Sources */,
 				CCFC735D1F2D1822008C60BB /* GameVC.swift in Sources */,
 				CCFC73661F2D1952008C60BB /* CGPointExtensions.swift in Sources */,
+				CC598D141F68960E000726ED /* GameOverVC.swift in Sources */,
+				CC598D161F689649000726ED /* GameOverDelegate.swift in Sources */,
 				CCFC736D1F2D373D008C60BB /* BlueFish.swift in Sources */,
 				CCFC73691F2D2089008C60BB /* RedFish.swift in Sources */,
 				CCFC73611F2D18C0008C60BB /* CatCharacter.swift in Sources */,

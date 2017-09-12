@@ -12,8 +12,7 @@ protocol GameChanged {
     func loseLife()
     func getLife()
     func fishCatch(_ fishesToCatch: Int)
-    func gameOver()
     func setScore(score: Int)
-    func resetToInit()
+    func gameover()
     
 }

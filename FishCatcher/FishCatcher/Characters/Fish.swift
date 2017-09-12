@@ -55,35 +55,23 @@ class Fish: SKSpriteNode {
     }
     
     func randomPosition(at scene:SKScene) -> CGPoint {
-        return CGPoint(x: CGFloat.random(min: 0, max: scene.size.width),
-                       y: CGFloat.random(min: 0, max: scene.size.height))
+        let rect = scene.frame
+        let x = CGFloat(arc4random()).truncatingRemainder(dividingBy: rect.size.width)
+        let y = CGFloat(arc4random()).truncatingRemainder(dividingBy: rect.size.height)
+        
+        return CGPoint(x: x, y: y)
     }
     
     func move(on scene: SKScene){
-        if desiredPosition == nil{
-            desiredPosition = randomPosition(at: scene)
+        var actions: [SKAction] = []
+        for _ in 0..<25{
+            let destination = randomPosition(at: scene)
+            let movement = SKAction.move(to: destination, duration: 1)
+            actions.append(movement)
         }
-        var maxRangePos = desiredPosition!
-        maxRangePos.x += 100
-        maxRangePos.y += 100
-        var minRangePos = desiredPosition!
-        minRangePos.x -= 100
-        minRangePos.y -= 100
-        let rangeX = Range(uncheckedBounds: (lower: minRangePos.x, upper: maxRangePos.x))
-        let rangeY = Range(uncheckedBounds: (lower: minRangePos.y, upper: maxRangePos.y))
-        let isOnRange = rangeX.contains(position.x) && rangeY.contains(position.y)
-        if !isOnRange, let point = desiredPosition{
-            let duration = TimeInterval(CGFloat.random(min: 3, max: 4))
-            let moveAction = SKAction.move(to: point, duration: duration)
-            let sequence = SKAction.sequence([moveAction])
-            self.run(sequence)
-        }else if isOnRange{
-            desiredPosition = randomPosition(at: scene)
-            let duration = TimeInterval(CGFloat.random(min: 3, max: 4))
-            let moveAction = SKAction.move(to: desiredPosition!, duration: duration)
-            let sequence = SKAction.sequence([moveAction])
-            self.run(sequence)
-        }
+        let sequence = SKAction.sequence(actions)
+        let runForever = SKAction.repeatForever(sequence)
+        run(runForever)
     }
 }
 

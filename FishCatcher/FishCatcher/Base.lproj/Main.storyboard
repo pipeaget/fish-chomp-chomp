@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Imv-U3-3T9">
     <device id="retina4_7" orientation="landscape">
         <adaptation id="fullscreen"/>
     </device>
@@ -86,19 +86,84 @@
                             <constraint firstItem="2ab-S1-WkL" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="yjW-1z-3rL"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="dUP-Jn-zmK"/>
+                    <nil key="simulatedTopBarMetrics"/>
                     <connections>
                         <outlet property="btnSound" destination="pvN-VS-pNz" id="iXd-uo-rgW"/>
                         <outlet property="lblNumberOfLifes" destination="2ab-S1-WkL" id="83f-hN-go0"/>
                         <outlet property="lblScore" destination="hGE-dg-SCm" id="nOq-BY-neB"/>
                         <outlet property="pvFishesToNextLife" destination="JDp-XV-CEw" id="Xoa-W2-aq2"/>
+                        <segue destination="di2-sK-Irb" kind="presentation" identifier="gameover" modalTransitionStyle="flipHorizontal" id="f9z-yS-nTg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="927.88605697151434" y="138.40000000000001"/>
+        </scene>
+        <!--Game OverVC-->
+        <scene sceneID="Ww3-XX-Rei">
+            <objects>
+                <viewController id="di2-sK-Irb" customClass="GameOverVC" customModule="FishCatcher" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="usM-h6-eTC"/>
+                        <viewControllerLayoutGuide type="bottom" id="EKe-xd-dBA"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="agK-2U-p8T">
+                        <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="gameover_bg" translatesAutoresizingMaskIntoConstraints="NO" id="bPa-cz-BI9">
+                                <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AcP-JH-ua5">
+                                <rect key="frame" x="260" y="305" width="50" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <state key="normal" image="replay"/>
+                                <connections>
+                                    <action selector="retryPressed:" destination="di2-sK-Irb" eventType="touchUpInside" id="qHO-XI-i8d"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OmU-2L-iHc">
+                                <rect key="frame" x="358" y="305" width="50" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="share"/>
+                                <connections>
+                                    <action selector="sharePuntuationPressed:" destination="di2-sK-Irb" eventType="touchUpInside" id="Udc-o6-JWq"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="RAc-51-bi0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1583.6581709145428" y="136.80000000000001"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="iaI-H5-0cC">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Imv-U3-3T9" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="cjX-YJ-7L0">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="u9y-eb-gNw"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zFa-09-NrR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="137.18140929535232" y="138.40000000000001"/>
         </scene>
     </scenes>
     <resources>
+        <image name="gameover_bg" width="2048" height="1536"/>
+        <image name="replay" width="600" height="600"/>
+        <image name="share" width="50" height="50"/>
         <image name="unmute" width="300" height="300"/>
     </resources>
 </document>

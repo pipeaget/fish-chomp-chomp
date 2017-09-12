@@ -16,25 +16,32 @@ class GameVC: UIViewController {
     @IBOutlet weak var lblScore: UILabel?
     @IBOutlet weak var btnSound: UIButton?
     
-    lazy var scene: GameScene = GameScene(size:CGSize(width: 2048, height: 1536))
+    var scene: GameScene?
+    var audioPlayer: AudioPlayer?
     lazy var logic = Logic()
     override func viewDidLoad() {
         super.viewDidLoad()
-        scene.logic = logic
-        scene.gameChagedDelegate = self
+        self.navigationController?.isNavigationBarHidden = true
+        audioPlayer = AudioPlayer()
+        createGameScene()
         let skView = self.view as! SKView
         skView.showsFPS = true
         skView.showsNodeCount = true
         skView.ignoresSiblingOrder = true
-        scene.scaleMode = .aspectFill
         skView.presentScene(scene)
-        
+        audioPlayer?.playBackgroundMusic()
         setNumberOfLifes(logic.lifes)
         setNumberOfFishesToNextLife(logic.catchesToNextLife)
         setMyScore(logic.score)
     }
     override var prefersStatusBarHidden: Bool {
         return true
+    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let gameover = segue.destination as? GameOverVC {
+            gameover.delegate = self
+            gameover.points = logic.score
+        }
     }
     
     fileprivate func setNumberOfLifes(_ lifes: Int) {
@@ -53,10 +60,22 @@ class GameVC: UIViewController {
          lblScore?.text = "\(score) pts."
     }
     
+    fileprivate func createGameScene(){
+        scene = GameScene(size:CGSize(width: 2048, height: 1536))
+        scene?.logic = logic
+        scene?.gameChagedDelegate = self
+        scene?.scaleMode = .aspectFill
+
+    }
+    
     @IBAction func soundBtnPressed(_ sender: UIButton) {
         let image = sender.imageView?.image == #imageLiteral(resourceName: "unmute") ? #imageLiteral(resourceName: "mute") : #imageLiteral(resourceName: "unmute")
         sender.setImage(image, for: .normal)
-        scene.audioPlayer.tooglePlay()
+        if audioPlayer?.isPlaying == true {
+            audioPlayer?.stopBackgroundMusic()
+        }else{
+            audioPlayer?.playBackgroundMusic()
+        }
     }
 }
 
@@ -75,15 +94,25 @@ extension GameVC: GameChanged{
     func fishCatch(_ fishesToCatch: Int) {
         setNumberOfFishesToNextLife(fishesToCatch)
     }
-    func gameOver() {
-        logic.resetLogic()
-        setNumberOfLifes(logic.lifes)
-        setNumberOfFishesToNextLife(logic.catchesToNextLife)
+    
+    func gameover() {
+        audioPlayer?.stopBackgroundMusic()
+        scene = nil
+        self.performSegue(withIdentifier: "gameover", sender: self)
     }
-    func resetToInit() {
+}
+
+extension GameVC: GameOverDelegate{
+    func retryPressed() {
+        audioPlayer?.playBackgroundMusic()
         logic.resetLogic()
         setNumberOfLifes(logic.lifes)
         setNumberOfFishesToNextLife(logic.catchesToNextLife)
         setMyScore(logic.score)
+        btnSound?.setImage(#imageLiteral(resourceName: "unmute"), for: .normal)
+        createGameScene()
+        let skView = self.view as! SKView
+        skView.presentScene(scene)
+        dismiss(animated: true, completion: nil)
     }
 }
