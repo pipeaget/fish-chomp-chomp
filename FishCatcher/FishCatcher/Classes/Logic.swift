@@ -50,4 +50,12 @@ class Logic: NSObject {
         }
     }
     
+    func resetLogic(){
+        redFishes = 1
+        lifes = 3
+        catchesToNextLife = 10
+        score = 0
+        catchValue = 10
+        
+    }
 }

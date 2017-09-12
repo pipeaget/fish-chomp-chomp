@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina4_7" orientation="portrait">
+    <device id="retina4_7" orientation="landscape">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="GLIMSTIC.TTF">
+            <string>Glimstick</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--GameVC-->
         <scene sceneID="tne-QT-ifu">
@@ -18,13 +24,81 @@
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC" customClass="SKView">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pvN-VS-pNz">
+                                <rect key="frame" x="602" y="20" width="45" height="45"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="45" id="3gO-p4-zYK"/>
+                                    <constraint firstAttribute="height" constant="45" id="tGc-Zf-Lpa"/>
+                                </constraints>
+                                <color key="tintColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <state key="normal" image="unmute"/>
+                                <connections>
+                                    <action selector="soundBtnPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="aLI-Ac-0UR"/>
+                                </connections>
+                            </button>
+                            <progressView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="JDp-XV-CEw">
+                                <rect key="frame" x="20" y="363" width="200" height="2"/>
+                                <color key="progressTintColor" red="1" green="0.0" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="trackTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </progressView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Siguiente vida:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IUs-ua-65Y">
+                                <rect key="frame" x="20" y="325" width="200" height="30"/>
+                                <fontDescription key="fontDescription" name="Glimstick" family="Glimstick" pointSize="25"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="vidas" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2ab-S1-WkL">
+                                <rect key="frame" x="20" y="20" width="200" height="34"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="34" id="IEP-KU-772"/>
+                                    <constraint firstAttribute="width" constant="200" id="au6-w5-8W6"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Glimstick" family="Glimstick" pointSize="25"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Score:" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hGE-dg-SCm">
+                                <rect key="frame" x="447" y="325" width="200" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="200" id="ZeT-T5-EJh"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Glimstick" family="Glimstick" pointSize="25"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="2ab-S1-WkL" firstAttribute="leading" secondItem="IUs-ua-65Y" secondAttribute="leading" id="0B5-tv-bbT"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="JDp-XV-CEw" secondAttribute="bottom" constant="10" id="4dd-Ni-pBU"/>
+                            <constraint firstItem="2ab-S1-WkL" firstAttribute="top" secondItem="pvN-VS-pNz" secondAttribute="top" id="7zR-J0-Ccu"/>
+                            <constraint firstItem="2ab-S1-WkL" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="9xp-IY-W6n"/>
+                            <constraint firstItem="IUs-ua-65Y" firstAttribute="leading" secondItem="JDp-XV-CEw" secondAttribute="leading" id="F2M-mn-XAe"/>
+                            <constraint firstItem="2ab-S1-WkL" firstAttribute="trailing" secondItem="IUs-ua-65Y" secondAttribute="trailing" id="Gg9-O0-ItB"/>
+                            <constraint firstItem="IUs-ua-65Y" firstAttribute="trailing" secondItem="JDp-XV-CEw" secondAttribute="trailing" id="Q3v-wL-8mk"/>
+                            <constraint firstItem="pvN-VS-pNz" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="Uwb-FS-1kg"/>
+                            <constraint firstItem="hGE-dg-SCm" firstAttribute="baseline" secondItem="IUs-ua-65Y" secondAttribute="baseline" id="bvJ-ev-ayH"/>
+                            <constraint firstItem="hGE-dg-SCm" firstAttribute="trailing" secondItem="pvN-VS-pNz" secondAttribute="trailing" id="rD1-4H-ikM"/>
+                            <constraint firstItem="JDp-XV-CEw" firstAttribute="top" secondItem="IUs-ua-65Y" secondAttribute="bottom" constant="8" symbolic="YES" id="xdG-Bp-HCA"/>
+                            <constraint firstItem="2ab-S1-WkL" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="yjW-1z-3rL"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="btnSound" destination="pvN-VS-pNz" id="iXd-uo-rgW"/>
+                        <outlet property="lblNumberOfLifes" destination="2ab-S1-WkL" id="83f-hN-go0"/>
+                        <outlet property="lblScore" destination="hGE-dg-SCm" id="nOq-BY-neB"/>
+                        <outlet property="pvFishesToNextLife" destination="JDp-XV-CEw" id="Xoa-W2-aq2"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="137.18140929535232" y="138.40000000000001"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="unmute" width="300" height="300"/>
+    </resources>
 </document>

@@ -8,9 +8,9 @@
 
 import AVFoundation
 
-class AudioPLayer:NSObject {
+class AudioPlayer:NSObject {
     var backgroundPlayer:AVAudioPlayer!
-    
+    internal var isPlaying = true
     
     /// Method that plays the music
     func playBackgroundMusic(){
@@ -30,6 +30,7 @@ class AudioPLayer:NSObject {
     
     /// Method that stops the music
     func stopBackgroundMusic(){
+        isPlaying = false
         guard let backgroundPlayer = backgroundPlayer, backgroundPlayer.isPlaying else{
             return
         }
@@ -44,5 +45,15 @@ class AudioPLayer:NSObject {
             return
         }
         backgroundPlayer.pause()
+    }
+    
+    func tooglePlay() {
+        if isPlaying{
+            stopBackgroundMusic()
+            isPlaying = false
+        }else{
+            playBackgroundMusic()
+            isPlaying = true
+        }
     }
 }

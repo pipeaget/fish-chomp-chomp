@@ -11,7 +11,10 @@ import SpriteKit
 
 
 class GameOverScene: SKScene{
-    let lose:Bool
+    let lose: Bool
+    weak var logic: Logic?
+    var gameDelegate: GameChanged?
+    
     lazy var btnReplay:AGSpriteButton = {
         let replay = #imageLiteral(resourceName: "replay").imageWithColor(color: UIColor.white)
         let texture = SKTexture(image: replay)
@@ -42,7 +45,10 @@ class GameOverScene: SKScene{
     }
     
     func replayBtnPressed(){
+        logic?.resetLogic()
         let mainScene = GameScene(size: size)
+        mainScene.logic = logic
+        mainScene.gameChagedDelegate = gameDelegate
         mainScene.scaleMode = scaleMode
         let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
         view?.presentScene(mainScene, transition: reveal)

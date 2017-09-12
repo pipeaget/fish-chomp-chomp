@@ -8,82 +8,51 @@
 
 import SpriteKit
 
+typealias ShouldPlayAction = (Bool) -> Void
+
 class GameScene: SKScene {
-    var lastUpdateTime: TimeInterval = 0
+    
+    //Control
+    var lastUpdate: TimeInterval = 0
     var dt: TimeInterval = 0
-    let playableRect: CGRect
+    var velocity: CGPoint = .zero
+    weak var logic: Logic?
     var lastTouchLocation: CGPoint?
-    let catAnimation:SKAction
-    let cat = CatCharacter(imageNamed: "cat1")
-    var velocity = CGPoint.zero
-    let logic = Logic()
-    var greenFish:GreenFish!
-    var blueFish:BlueFish!
-    lazy var btnMute:AGSpriteButton = {
-        let btn = AGSpriteButton(imageNamed: "mute")
-        btn.zPosition = 300
-        return btn
-    }()
-    var musicPlayer:AudioPLayer!
-    var livesLabel:SKLabelNode!
-    var toNextLifeLabel:SKLabelNode!
-    var scoreLabel:SKLabelNode!
-    let cameraNode = SKCameraNode()
-    
-    override init(size: CGSize) {
-        musicPlayer = AudioPLayer()
-        let maxAspectRatio:CGFloat = 16.0/9.0
-        let playableHeight = size.width / maxAspectRatio
-        let playableMargin = (size.height-playableHeight)/2.0
-        playableRect = CGRect(x: 0, y: playableMargin,
-                              width: size.width,
-                              height: playableHeight)
-        var textures:[SKTexture] = []
-        for i in 1...6{
-            textures.append(SKTexture(imageNamed: "cat\(i)"))
-        }
-        textures.append(textures[4])
-        textures.append(textures[3])
-        textures.append(textures[2])
-        catAnimation = SKAction.animate(with: textures, timePerFrame: 0.1)
-        super.init(size: size)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    let audioPlayer = AudioPlayer()
+    lazy var playableRect: CGRect = self.createPlayableRect()
+    var gameChagedDelegate: GameChanged?
+    var shouldPlay: ShouldPlayAction?
+    //Characters
+    let cat: CatCharacter = CatCharacter(imageNamed: "cat1")
     
     
+    
+    //MARK: - Scene lifecycle
     override func didMove(to view: SKView) {
-        backgroundColor = UIColor.white
+        audioPlayer.playBackgroundMusic()
         let background = SKSpriteNode(imageNamed: "scenario_bg")
         background.position = CGPoint(x: size.width/2, y: size.height/2)
-        background.zPosition = -1
+        background.zPosition = -100
         addChild(background)
-        musicPlayer.playBackgroundMusic()
+        //Setting the cat
         cat.position = CGPoint(x: 400, y: 400)
+        cat.name = "cat"
         cat.xScale = cat.xScale * -1
-        
+        cat.physicsBody = createCatPhysicBody()
+        cat.setPhysicBody()
         addChild(cat)
         cat.startCatAnimation()
-        spawnFishes()
-        spawnEnemy()
-        debugDrawPlayableArea()
-        btnMute.position = CGPoint(x: 1980, y: 1271)
-        btnMute.setScale(0.4)
-        btnMute.addTarget(self, selector: #selector(self.stopMusic), with: nil, for: .touchUpInside)
-        addChild(btnMute)
-        addChild(cameraNode)
-        camera = cameraNode
-        cameraNode.position = CGPoint(x: size.width/2, y: size.height/2)
-        addLivesLabel()
-        addScore()
-        addNextLife()
+        //Create the enemy
+        addEnemy()
+        addGreenFish()
+        addBlueFish()
+        physicsWorld.gravity = .zero
+        physicsWorld.contactDelegate = self
     }
-
+    
     override func update(_ currentTime: TimeInterval) {
-        dt = lastUpdateTime > 0 ? currentTime - lastUpdateTime : 0
-        lastUpdateTime = currentTime
+        dt = lastUpdate > 0 ? currentTime - lastUpdate : 0
+        lastUpdate = currentTime
         guard let lastTouchLocation =  lastTouchLocation else{
             boundsCheckCat()
             return
@@ -97,17 +66,22 @@ class GameScene: SKScene {
             cat.rotate(dt: dt, direction: velocity)
         }
         boundsCheckCat()
-        livesLabel.text = "Vidas:\(logic.lifes)"
-        greenFish.move(on: self)
-        blueFish.move(on: self)
-        enumerateChildNodes(withName: "enemy") { node, _ in
-            let redFish = node as! RedFish
-            redFish.move(on: self)
+        
+        enumerateChildNodes(withName: "goodFish") { node, _ in
+            if let fish = node as? Fish {
+                fish.move(on: self)
+            }
         }
         
-        scoreLabel.text = "\(logic.score) Pts"
-        toNextLifeLabel.text = "Sig vida: \(logic.catchesToNextLife)"
+        enumerateChildNodes(withName: "enemy") { node, _ in
+            let redFish = node as! RedFish
+            redFish.changePositionAndShow(in: self.playableRect,
+                                          at: self.cat.position,
+                                          velocity: self.velocity, dt: Double(self.dt))
+        }
     }
+    
+    //MARK: - All touch handlers
     
     override func touchesBegan(_ touches: Set<UITouch>,
                                with event: UIEvent?) {
@@ -127,10 +101,19 @@ class GameScene: SKScene {
         sceneTouched(touchLocation: touchLocation)
     }
     
-    override func didEvaluateActions() {
-        checkCollisions()
-        
+    
+    func sceneTouched(touchLocation:CGPoint) {
+        lastTouchLocation = touchLocation
+        moveCatToward(location: touchLocation)
     }
+    
+    func moveCatToward(location: CGPoint) {
+        let offset = location - cat.position
+        let direction = offset.normalized()
+        velocity = direction * cat.catMovePointsPerSec * 2
+    }
+    
+    //MARK:- All control variables 
     
     /// Method that shows says if the cat is on the rect bounds
     func boundsCheckCat() {
@@ -154,223 +137,144 @@ class GameScene: SKScene {
             cat.velocity.y = -cat.velocity.y
         }
     }
-    func sceneTouched(touchLocation:CGPoint) {
-        lastTouchLocation = touchLocation
-        moveCatToward(location: touchLocation)
-    }
-    func moveCatToward(location: CGPoint) {
-        let offset = location - cat.position
-        let direction = offset.normalized()
-        velocity = direction * cat.catMovePointsPerSec
+    
+    //MARK:- Private methods
+    private func createPlayableRect() -> CGRect {
+        let maxAspectRatio:CGFloat = 16.0/9.0
+        let playableHeight = size.width / maxAspectRatio
+        let playableMargin = (size.height-playableHeight)/2.0
+        return CGRect(x: 0, y: playableMargin,
+                      width: size.width,
+                      height: playableHeight)
     }
     
-    func stopMusic(){
-        let name = musicPlayer.backgroundPlayer.isPlaying ?  "mute":"unmute"
-        btnMute.removeFromParent()
-        btnMute = AGSpriteButton(imageNamed: name)
-        btnMute.position = CGPoint(x: 1980, y: 1271)
-        btnMute.setScale(0.4)
-        btnMute.addTarget(self, selector: #selector(self.stopMusic), with: nil, for: .touchUpInside)
-        addChild(btnMute)
-        musicPlayer.backgroundPlayer.isPlaying ? musicPlayer.pauseBackgroundMusic():musicPlayer.playBackgroundMusic()
-        
+    private func createCatPhysicBody() -> SKPhysicsBody{
+        guard let catTexture = cat.texture else {
+            return  SKPhysicsBody(rectangleOf: cat.frame.size)
+        }
+        return SKPhysicsBody(texture: catTexture, size: cat.size)
     }
     
-    /// Method that draws the playable area
-    private func debugDrawPlayableArea() {
-        let shape = SKShapeNode()
-        let path = CGMutablePath()
-        path.addRect(playableRect)
-        shape.path = path
-        shape.strokeColor = SKColor.red
-        shape.lineWidth = 4.0
-        addChild(shape)
-    }
-    
-    private func addLivesLabel(){
-        livesLabel = SKLabelNode(fontNamed: "Glimstick")
-        livesLabel.text = "Vidas:\(logic.lifes)"
-        livesLabel.fontColor = UIColor.white
-        livesLabel.fontSize = 80
-        livesLabel.zPosition = 150
-        livesLabel.horizontalAlignmentMode = .left
-        livesLabel.verticalAlignmentMode = .bottom
-        livesLabel.position = CGPoint(x: -playableRect.size.width/2 + CGFloat(20),
-                                      y: -playableRect.size.height/2 + CGFloat(20))
-        
-        cameraNode.addChild(livesLabel)
-    }
-    
-    private func addScore(){
-        scoreLabel = SKLabelNode(fontNamed: "Glimstick")
-        scoreLabel.text = "\(logic.score) Pts"
-        scoreLabel.fontColor = UIColor.white
-        scoreLabel.fontSize = 80
-        scoreLabel.zPosition = 150
-        scoreLabel.horizontalAlignmentMode = .right
-        scoreLabel.verticalAlignmentMode = .bottom
-        scoreLabel.position = CGPoint(x: playableRect.size.width/2 - CGFloat(80),
-                                      y: -playableRect.size.height/2 + CGFloat(20))
-        
-        cameraNode.addChild(scoreLabel)
-    }
-    
-    private func addNextLife(){
-        toNextLifeLabel = SKLabelNode(fontNamed: "Glimstick")
-        toNextLifeLabel.text = "Sig vida: \(logic.catchesToNextLife)"
-        toNextLifeLabel.fontColor = UIColor.white
-        toNextLifeLabel.fontSize = 80
-        toNextLifeLabel.zPosition = 150
-        toNextLifeLabel.horizontalAlignmentMode = .left
-        toNextLifeLabel.verticalAlignmentMode = .top
-        toNextLifeLabel.position = CGPoint(x: -playableRect.size.width/2 + 20,
-                                           y: playableRect.size.height/2 - 20)
-        
-        cameraNode.addChild(toNextLifeLabel)
-    }
-    
-    /// Method that creates an enemy
-    private func spawnEnemy() {
-       let enemy = RedFish(imageNamed: "red_fish1")
+    fileprivate func addEnemy(){
+        let enemy = RedFish(imageNamed: "red_fish1")
         enemy.name = "enemy"
+        let size =  CGSize(width: enemy.frame.size.width*0.8, height: enemy.frame.size.height*0.8)
+        enemy.physicsBody = SKPhysicsBody(rectangleOf: size)
+        enemy.setScale(0)
+        enemy.fishAnimation = enemy.createFishAnimationWithSprite("red_fish")
         enemy.position = CGPoint(x: CGFloat.random(min: playableRect.minX, max: playableRect.maxX),
                                  y: CGFloat.random(min: playableRect.minY, max: playableRect.maxY))
-        enemy.setScale(0)
         addChild(enemy)
         enemy.startFishAnimation()
+        enemy.physicsBody?.categoryBitMask = PhysicsCategory.enemy
+        enemy.physicsBody?.usesPreciseCollisionDetection = false
         let appear = SKAction.scale(to: 1.0, duration: 0.5)
         enemy.run(appear)
     }
     
-    
-    /// Method that creates the green fish
-    private func addGreenFish(){
-        greenFish = GreenFish(imageNamed: "green_fish1")
-        greenFish.name = "green_fish"
-        greenFish.position = CGPoint(x: CGFloat.random(min: playableRect.minX, max: playableRect.maxX),
-                                     y: CGFloat.random(min: playableRect.minY, max: playableRect.maxY))
-        greenFish.setScale(0)
-        addChild(greenFish)
-        greenFish.startFishAnimation()
-        let appear = SKAction.scale(to: 1.0, duration: 0.5)
-        let leftWiggle = SKAction.rotate(byAngle: π/8, duration: 0.5)
-        let rightWiggle = leftWiggle.reversed()
-        let fullWiggle = SKAction.sequence([leftWiggle,rightWiggle])
-        let scaleUp = SKAction.scale(by: 1.0, duration: 0.25)
-        let scaleDown = scaleUp.reversed()
-        let fullScale = SKAction.sequence([scaleUp,scaleDown,scaleUp,scaleDown])
-        let group = SKAction.group([fullScale,fullWiggle])
-        let groupWait = SKAction.repeatForever(group)
-        let actions = [appear,groupWait]
-        greenFish.run(SKAction.sequence(actions))
-        
-    }
-    
-    
-    /// Method that creates the blue fish
-    private func addBlueFish(){
-        blueFish = BlueFish(imageNamed: "blue_fish1")
-        blueFish.name = "blue_fish"
-        blueFish.position = CGPoint(x: CGFloat.random(min: playableRect.minX, max: playableRect.maxX),
-                                    y: CGFloat.random(min: playableRect.minY, max: playableRect.maxY))
-        blueFish.setScale(0)
-        addChild(blueFish)
-        blueFish.startFishAnimation()
-        let appear = SKAction.scale(to: 1.0, duration: 0.5)
-        let leftWiggle = SKAction.rotate(byAngle: π/8, duration: 0.5)
-        let rightWiggle = leftWiggle.reversed()
-        let fullWiggle = SKAction.sequence([leftWiggle,rightWiggle])
-        let scaleUp = SKAction.scale(by: 1.0, duration: 0.25)
-        let scaleDown = scaleUp.reversed()
-        let fullScale = SKAction.sequence([scaleUp,scaleDown,scaleUp,scaleDown])
-        let group = SKAction.group([fullScale,fullWiggle])
-        let groupWait = SKAction.repeatForever(group)
-        let actions = [appear,groupWait]
-        blueFish.run(SKAction.sequence(actions))
-        
-    }
-    
-    
-    /// Method that creates both green and blue fishes
-    private func spawnFishes(){
-        addGreenFish()
-        addBlueFish()
-    }
-    
-    
-    /// Method that check all the collisions
-    private func checkCollisions(){
-        var hitedGreenFishes:[GreenFish] = []
-        enumerateChildNodes(withName: "green_fish") { node, _ in
-            let fish = node as! GreenFish
-            if fish.frame.intersects(self.cat.frame){
-                hitedGreenFishes.append(fish)
-            }
-        }
-        removeFishesCollided(fishes: hitedGreenFishes)
-        var hittedBlueFish:[BlueFish] = []
-        enumerateChildNodes(withName: "blue_fish") { node, _ in
-            let fish = node as! BlueFish
-            if fish.frame.intersects(self.cat.frame){
-                hittedBlueFish.append(fish)
-            }
-        }
-        removeFishesCollided(fishes: hittedBlueFish)
-        //The cat is temporary invincible 
-        if cat.invincible {
+    fileprivate func catHitEnemy(_ fish:RedFish){
+        if cat.invincible{
             return
         }
-        var hitedEnemies:[RedFish] = []
+        cat.catHit(enemy: fish)
+        logic?.touchRedFish({ (gameover) in
+            if gameover {
+                self.audioPlayer.stopBackgroundMusic()
+                self.gameChagedDelegate?.resetToInit()
+                let gameOverScene = GameOverScene(size: self.size, lose: true)
+                gameOverScene.scaleMode = self.scaleMode
+                gameOverScene.logic = self.logic
+                gameOverScene.gameDelegate = self.gameChagedDelegate
+                let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
+                self.view?.presentScene(gameOverScene, transition: reveal)
+                return
+            }
+            self.gameChagedDelegate?.loseLife()
+        })
+        fish.removeFromParent()
+        addEnemy()
+    }
+    
+    fileprivate func addGreenFish() {
+        let greenFish = GreenFish(imageNamed:"green_fish1")
+        greenFish.name = "goodFish"
+        let size =  CGSize(width: greenFish.frame.size.width*0.8, height: greenFish.frame.size.height*0.8)
+        greenFish.physicsBody = SKPhysicsBody(rectangleOf: size)
+        greenFish.setScale(0)
+        greenFish.fishAnimation = greenFish.createFishAnimationWithSprite("green_fish")
+        greenFish.position = CGPoint(x: CGFloat.random(min: playableRect.minX, max: playableRect.maxX-100),
+                                 y: CGFloat.random(min: playableRect.minY, max: playableRect.maxY-100))
+        addChild(greenFish)
+        greenFish.startFishAnimation()
+        greenFish.physicsBody?.categoryBitMask = PhysicsCategory.goodFish
+        greenFish.physicsBody?.usesPreciseCollisionDetection = false
+        let appear = SKAction.scale(to: 1.0, duration: 0.5)
+        greenFish.run(appear)
+    }
+    fileprivate func addBlueFish(){
+        let greenFish = BlueFish(imageNamed: "blue_fish1")
+        greenFish.name = "goodFish"
+        let size =  CGSize(width: greenFish.frame.size.width*0.8, height: greenFish.frame.size.height*0.8)
+        greenFish.physicsBody = SKPhysicsBody(rectangleOf: size)
+        greenFish.setScale(0)
+        greenFish.fishAnimation = greenFish.createFishAnimationWithSprite("blue_fish")
+        greenFish.position = CGPoint(x: CGFloat.random(min: playableRect.minX, max: playableRect.maxX-100),
+                                     y: CGFloat.random(min: playableRect.minY, max: playableRect.maxY-100))
+        addChild(greenFish)
+        greenFish.startFishAnimation()
+        greenFish.physicsBody?.categoryBitMask = PhysicsCategory.goodFish
+        greenFish.physicsBody?.usesPreciseCollisionDetection = false
+        let appear = SKAction.scale(to: 1.0, duration: 0.5)
+        greenFish.run(appear)
+    }
+    
+    fileprivate func catHitGoodFish(_ fish: Fish) {
+        var enemies:[RedFish] = []
         enumerateChildNodes(withName: "enemy") { node, _ in
             let redFish = node as! RedFish
-            if redFish.frame.intersects(self.cat.frame){
-                hitedEnemies.append(redFish)
+            enemies.append(redFish)
+        }
+        if let redFishes = logic?.redFishes, redFishes != enemies.count && enemies.count < redFishes{
+            let diff = redFishes - enemies.count
+            for _ in 0..<diff{
+                addEnemy()
             }
         }
-        removeEnemyCollided(fishes: hitedEnemies)
+        logic?.touchBlueOrGreenFish()
+        if let score = logic?.score{
+            gameChagedDelegate?.setScore(score: score)
+        }
         
-    }
-    
-    
-    /// Method that remove from screen to the collided fishes
-    ///
-    /// - Parameter fishes: Array of fishes collided
-    private func removeFishesCollided(fishes:[SKSpriteNode]){
-        for fish in fishes{
-            let redFishes = logic.redFishes
-            logic.touchBlueOrGreenFish()
-            if redFishes != logic.redFishes{
-                spawnEnemy()
-            }
-            fish.removeAllActions()
-            fish.isHidden = true
-            if let fish = fish as? GreenFish{
-                fish.changePositionAndShow(in: playableRect)
-            }else if let fish = fish as? BlueFish {
-                fish.changePositionAndShow(in: playableRect)
-            }
+        if let toCatch = logic?.catchesToNextLife{
+            gameChagedDelegate?.fishCatch(toCatch)
+        }
+        fish.removeFromParent()
+        if fish is GreenFish{
+            addGreenFish()
+        }else if fish is BlueFish {
+            addBlueFish()
         }
     }
     
-    /// Method that remove from screen to the collided enemies
-    ///
-    /// - Parameter fishes: Array of enemies collided
-    private func removeEnemyCollided(fishes:[RedFish]){
-        for redFish in fishes{
-            redFish.removeAllActions()
-            redFish.isHidden = true
-            cat.catHit(enemy: redFish)
-            logic.touchRedFish{ gameover in
-                if gameover{
-                    self.musicPlayer.stopBackgroundMusic()
-                    let gameOverScene = GameOverScene(size: self.size, lose: true)
-                    gameOverScene.scaleMode = self.scaleMode
-                    let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
-                    self.view?.presentScene(gameOverScene, transition: reveal)
-                   return
-                }
-                redFish.changePositionAndShow(in: self.playableRect)
+}
+
+extension GameScene: SKPhysicsContactDelegate {
+    func didBegin(_ contact: SKPhysicsContact) {
+        let collision = (contact.bodyA.categoryBitMask, contact.bodyB.categoryBitMask)
+        switch collision {
+        case (PhysicsCategory.cat, PhysicsCategory.enemy) :
+            if let enemy = contact.bodyB.node as? RedFish {
+                enemy.removeFromParent()
+                catHitEnemy(enemy)
             }
+            break
+        case (PhysicsCategory.cat,PhysicsCategory.goodFish) :
+            if let fish = contact.bodyB.node as? Fish {
+                catHitGoodFish(fish)
+            }
+            break
+        default:
+            break
         }
     }
 }

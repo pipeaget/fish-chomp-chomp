@@ -13,11 +13,7 @@ class CatCharacter: SKSpriteNode {
     let catRotateRadiansPerSec:CGFloat = 4.0 * π
     var invincible = false
     var velocity = CGPoint.zero
-    
-    
-    
-    
-    internal var catAnimation:SKAction {
+    lazy var catTexture: [SKTexture] = {
         var textures:[SKTexture] = []
         for i in 1...6{
             textures.append(SKTexture(imageNamed: "cat\(i)"))
@@ -25,13 +21,21 @@ class CatCharacter: SKSpriteNode {
         textures.append(textures[4])
         textures.append(textures[3])
         textures.append(textures[2])
-        return SKAction.animate(with: textures, timePerFrame: 0.2)
+        return textures
+    }()
+    
+    
+    
+    internal var catAnimation:SKAction {
+        
+        return SKAction.animate(with: catTexture, timePerFrame: 0.2)
     }
     
     override func removeFromParent() {
         endCatAnimation()
     }
     
+   
     
     func startCatAnimation(){
         if self.action(forKey: "swim") == nil{
@@ -73,5 +77,14 @@ class CatCharacter: SKSpriteNode {
             self?.invincible = false
         }
         self.run(SKAction.sequence([blinkAction, setHidden]))
+    }
+    
+    internal func setPhysicBody() {
+        physicsBody?.usesPreciseCollisionDetection = false
+        physicsBody?.categoryBitMask = PhysicsCategory.cat
+        physicsBody?.collisionBitMask = PhysicsCategory.cat | PhysicsCategory.enemy | PhysicsCategory.goodFish
+        physicsBody?.contactTestBitMask = PhysicsCategory.cat | PhysicsCategory.enemy | PhysicsCategory.goodFish
+        
+        
     }
 }
