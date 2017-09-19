@@ -159,16 +159,13 @@ class GameScene: SKScene {
     }
     
     fileprivate func catHitEnemy(_ fish:RedFish){
-        if cat.invincible{
-            return
-        }
-        logic?.touchRedFish({ (gameover) in
-            if gameover {
-                self.gameChagedDelegate?.gameover()
-                return
-            }
-            self.gameChagedDelegate?.loseLife()
-        })
+//        logic?.touchRedFish({ (gameover) in
+//            if gameover {
+//                self.gameChagedDelegate?.gameover()
+//                return
+//            }
+//            self.gameChagedDelegate?.loseLife()
+//        })
         fish.removeFromParent()
         addEnemy()
     }
@@ -197,8 +194,8 @@ class GameScene: SKScene {
         blueFish.physicsBody = SKPhysicsBody(rectangleOf: size)
         blueFish.setScale(0)
         blueFish.fishAnimation = blueFish.createFishAnimationWithSprite("blue_fish")
-        blueFish.position = CGPoint(x: CGFloat.random(min: playableRect.minX, max: playableRect.maxX-100),
-                                     y: CGFloat.random(min: playableRect.minY, max: playableRect.maxY-100))
+        blueFish.position = CGPoint(x: CGFloat.random(min: playableRect.minX, max: playableRect.maxX),
+                                     y: CGFloat.random(min: playableRect.minY, max: playableRect.maxY))
         addChild(blueFish)
         blueFish.startFishAnimation()
         blueFish.physicsBody?.categoryBitMask = PhysicsCategory.goodFish

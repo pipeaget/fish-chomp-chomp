@@ -41,18 +41,6 @@ class Fish: SKSpriteNode {
         self.removeAction(forKey: "swim")
     }
     
-    func changePositionAndShow(in playableRect:CGRect, at point:CGPoint, velocity:CGPoint, dt:TimeInterval){
-        let offset = self.position - point
-        let direction = offset.normalized()
-        let fishvelocity = direction * 480 * 0.75
-        move(dt: dt, velocity: fishvelocity)
-    }
-    
-    func move(dt:TimeInterval, velocity: CGPoint) {
-        let amountToMove = CGPoint(x: velocity.x * CGFloat(dt),
-                                   y: velocity.y * CGFloat(dt))
-        self.position -= amountToMove
-    }
     
     func randomPosition(at scene:SKScene) -> CGPoint {
         let rect = scene.frame
@@ -64,10 +52,15 @@ class Fish: SKSpriteNode {
     
     func move(on scene: SKScene){
         var actions: [SKAction] = []
-        for _ in 0..<25{
+        for _ in 0 ..< 50{
             let destination = randomPosition(at: scene)
-            let movement = SKAction.move(to: destination, duration: 1)
-            actions.append(movement)
+            let action = SKAction.customAction(withDuration: 0.1, actionBlock: { (node, _) in
+               let dx = destination.x - node.position.x
+                node.xScale = (dx < 0) ? 1 : -1
+            })
+            let movement = SKAction.move(to: destination, duration: 1.5)
+            let moves = SKAction.sequence([action,movement])
+            actions.append(moves)
         }
         let sequence = SKAction.sequence(actions)
         let runForever = SKAction.repeatForever(sequence)
@@ -75,3 +68,11 @@ class Fish: SKSpriteNode {
     }
 }
 
+extension SKNode {
+    func rotateVersus(destPoint: CGPoint) {
+        let v1 = CGVector(dx:0, dy:1)
+        let v2 = CGVector(dx:destPoint.x - position.x, dy: destPoint.y - position.y)
+        let angle = atan2(v2.dy, v2.dx) - atan2(v1.dy, v1.dx)
+        zRotation = angle
+    }
+}
