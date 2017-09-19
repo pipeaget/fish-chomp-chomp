@@ -55,7 +55,7 @@ class Fish: SKSpriteNode {
         for _ in 0 ..< 50{
             let destination = randomPosition(at: scene)
             let action = SKAction.customAction(withDuration: 0.1, actionBlock: { (node, _) in
-               let dx = destination.x - node.position.x
+                let dx = destination.x - node.position.x
                 node.xScale = (dx < 0) ? 1 : -1
             })
             let movement = SKAction.move(to: destination, duration: 1.5)

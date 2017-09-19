@@ -159,13 +159,13 @@ class GameScene: SKScene {
     }
     
     fileprivate func catHitEnemy(_ fish:RedFish){
-//        logic?.touchRedFish({ (gameover) in
-//            if gameover {
-//                self.gameChagedDelegate?.gameover()
-//                return
-//            }
-//            self.gameChagedDelegate?.loseLife()
-//        })
+        logic?.touchRedFish({ (gameover) in
+            if gameover {
+                self.gameChagedDelegate?.gameover()
+                return
+            }
+            self.gameChagedDelegate?.loseLife()
+        })
         fish.removeFromParent()
         addEnemy()
     }
